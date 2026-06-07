@@ -1,0 +1,537 @@
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--bk:#0a0a0a;--ow:#f2ede6;--ag:#c8f53c;--rust:#c9450a;--sv:#c0bdb6;--db:#1a1208;--mg:#2e2b24;--mg2:#3a3830;}
+body{background:var(--bk);color:var(--ow);font-family:'Space Mono',monospace;overflow-x:hidden;}
+
+.info-bar{background:var(--rust);padding:0.32rem 1.8rem;display:flex;justify-content:space-between;align-items:center;font-size:0.56rem;letter-spacing:0.11em;color:rgba(242,237,230,0.9);gap:1rem;}
+.info-bar a{color:rgba(242,237,230,0.9);text-decoration:none;}
+.info-bar a:hover{color:#fff;text-decoration:underline;}
+.ib-center{color:rgba(242,237,230,0.72);}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:0.8rem 1.8rem;border-bottom:1px solid rgba(200,245,60,0.15);background:rgba(10,10,10,0.97);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.38rem;letter-spacing:0.1em;color:var(--ag);cursor:pointer;line-height:1;}
+.nav-logo-sub{font-size:0.46rem;letter-spacing:0.18em;color:var(--sv);display:block;margin-top:1px;}
+.nav-menu{display:flex;list-style:none;}
+.nav-btn{background:none;border:none;color:var(--sv);font-family:'Space Mono',monospace;font-size:0.59rem;letter-spacing:0.13em;padding:0 0.82rem;height:44px;cursor:pointer;transition:color 0.2s;display:flex;align-items:center;gap:3px;}
+.nav-btn:hover,.nav-btn.active{color:var(--ag);}
+.nav-btn .chev{font-size:0.46rem;transition:transform 0.25s;opacity:0.5;}
+.nav-btn.active .chev{transform:rotate(180deg);}
+.nav-badge{font-size:0.5rem;letter-spacing:0.1em;color:var(--rust);border:1px solid var(--rust);padding:0.17rem 0.44rem;}
+
+.mega-drop{display:none;background:var(--db);border-bottom:1px solid rgba(200,245,60,0.1);}
+.mega-drop.open{display:block;}
+.mega-inner{max-width:1100px;margin:0 auto;padding:1.5rem 1.8rem;display:grid;gap:1.4rem;}
+.drop-eyebrow{font-size:0.52rem;letter-spacing:0.22em;color:var(--ag);margin-bottom:0.32rem;}
+.drop-title{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:0.04em;color:var(--ow);line-height:1;margin-bottom:0.55rem;}
+.drop-desc{font-size:0.63rem;line-height:1.7;color:var(--sv);max-width:270px;}
+.drop-cards{display:grid;gap:1px;background:rgba(242,237,230,0.06);}
+.drop-card{background:var(--db);padding:0.95rem 1.15rem;cursor:pointer;transition:background 0.2s;position:relative;}
+.drop-card:hover{background:var(--mg);}
+.drop-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ag);transform:scaleY(0);transition:transform 0.2s;transform-origin:top;}
+.drop-card:hover::after{transform:scaleY(1);}
+.dc-label{font-size:0.5rem;letter-spacing:0.16em;color:var(--rust);margin-bottom:0.22rem;}
+.dc-title{font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.05em;color:var(--ow);margin-bottom:0.18rem;}
+.dc-desc{font-size:0.59rem;line-height:1.6;color:var(--sv);}
+.drop-tag{display:inline-block;font-size:0.49rem;letter-spacing:0.1em;padding:0.13rem 0.42rem;border:1px solid rgba(192,189,182,0.2);color:var(--sv);margin:0.1rem 0.07rem 0 0;}
+.drop-cta{display:inline-block;background:var(--ag);color:var(--bk);font-family:'Space Mono',monospace;font-size:0.57rem;letter-spacing:0.13em;font-weight:700;padding:0.48rem 1.05rem;cursor:pointer;border:none;margin-top:0.85rem;transition:background 0.2s;}
+.drop-cta:hover{background:#ddf54d;}
+
+.page{display:none;}
+.page.active{display:block;}
+
+.hero-wrap{min-height:calc(100vh - 95px);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:2.8rem 1.8rem 1.8rem;gap:2rem;}
+.hero-eyebrow{font-size:0.54rem;letter-spacing:0.22em;color:var(--ag);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+.hero-eyebrow::before{content:'';width:26px;height:1px;background:var(--ag);}
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,5.8rem);line-height:0.9;letter-spacing:0.02em;color:var(--ow);}
+.hero-h1 span{color:var(--ag);display:block;}
+.hero-sub-name{font-size:0.68rem;letter-spacing:0.17em;color:var(--sv);margin-top:0.75rem;border-left:2px solid var(--rust);padding-left:0.65rem;}
+.hero-p{margin-top:0.9rem;font-size:0.66rem;line-height:1.8;color:var(--sv);max-width:275px;}
+.hero-btns{display:flex;gap:0.55rem;margin-top:1.3rem;flex-wrap:wrap;}
+.btn-p{background:var(--ag);color:var(--bk);font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.13em;font-weight:700;padding:0.62rem 1.25rem;border:none;cursor:pointer;transition:background 0.2s;}
+.btn-p:hover{background:#ddf54d;}
+.btn-g{color:var(--ow);font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.13em;padding:0.62rem 1.25rem;border:1px solid rgba(242,237,230,0.22);background:none;cursor:pointer;transition:border-color 0.2s,color 0.2s;}
+.btn-g:hover{border-color:var(--ag);color:var(--ag);}
+
+.hero-img-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+.brand-img{width:100%;max-width:440px;height:auto;display:block;border:1px solid rgba(200,245,60,0.14);}
+.img-tag{position:absolute;background:var(--ag);color:var(--bk);font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.1em;padding:0.32rem 0.72rem;z-index:2;}
+.img-tag.tl{top:0;left:0;}
+.img-tag.br{bottom:0;right:0;}
+
+.mq-wrap{background:var(--ag);padding:0.52rem 0;overflow:hidden;}
+.mq-track{display:flex;gap:1.7rem;animation:mq 22s linear infinite;white-space:nowrap;}
+.mq-track span{font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.1em;color:var(--bk);flex-shrink:0;}
+.mq-track .d{color:var(--rust);}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+.sec-page{padding:2rem 1.8rem;max-width:1100px;margin:0 auto;}
+.sec-eyebrow{font-size:0.52rem;letter-spacing:0.22em;color:var(--ag);margin-bottom:0.32rem;}
+.sec-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,3vw,2.6rem);line-height:1;color:var(--ow);margin-bottom:0.9rem;}
+.sec-p{font-size:0.66rem;line-height:1.8;color:var(--sv);margin-bottom:1.2rem;max-width:510px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(242,237,230,0.06);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(242,237,230,0.06);}
+.g-card{background:var(--db);padding:1.25rem 1.15rem;transition:background 0.2s;}
+.g-card:hover{background:var(--mg);}
+.gc-num{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:rgba(200,245,60,0.1);line-height:1;margin-bottom:0.45rem;}
+.gc-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.05em;color:var(--ow);margin-bottom:0.4rem;}
+.gc-body{font-size:0.61rem;line-height:1.72;color:var(--sv);}
+.tags{display:flex;flex-wrap:wrap;gap:0.26rem;margin-top:0.65rem;}
+.tag{font-size:0.49rem;letter-spacing:0.1em;padding:0.16rem 0.4rem;border:1px solid rgba(192,189,182,0.2);color:var(--sv);}
+
+/* SOCIAL ICONS GRID */
+.social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(242,237,230,0.06);margin-top:1.2rem;}
+.social-card{background:var(--db);padding:1.4rem 1.2rem;display:flex;flex-direction:column;align-items:center;gap:0.7rem;transition:background 0.2s;cursor:pointer;text-align:center;}
+.social-card:hover{background:var(--mg);}
+.social-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.si-red{background:rgba(255,0,0,0.12);border:1px solid rgba(255,0,0,0.25);}
+.si-ins{background:rgba(200,100,200,0.12);border:1px solid rgba(200,100,200,0.25);}
+.si-wechat{background:rgba(50,200,50,0.12);border:1px solid rgba(50,200,50,0.25);}
+.si-dy{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);}
+.social-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.07em;color:var(--ow);}
+.social-handle{font-size:0.58rem;letter-spacing:0.08em;color:var(--sv);}
+
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:start;}
+.info-row{display:flex;gap:0.95rem;padding:0.75rem 0;border-bottom:1px solid rgba(242,237,230,0.07);align-items:flex-start;}
+.il{font-size:0.5rem;letter-spacing:0.14em;color:var(--rust);min-width:42px;padding-top:0.08rem;flex-shrink:0;}
+.iv{font-size:0.64rem;line-height:1.62;color:var(--sv);}
+.iv strong{color:var(--ow);display:block;margin-bottom:0.08rem;}
+.iv a{color:var(--ag);text-decoration:none;}
+.iv a:hover{text-decoration:underline;}
+.map-frame{border:1px solid rgba(200,245,60,0.12);height:185px;position:relative;overflow:hidden;background:var(--mg);margin-top:1.1rem;}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,245,60,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,245,60,0.04) 1px,transparent 1px);background-size:25px 25px;}
+.map-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:9px;height:9px;background:var(--rust);border-radius:50%;}
+.map-dot::before{content:'';position:absolute;inset:-8px;border:1px solid rgba(201,69,10,0.35);border-radius:50%;animation:pu 2s ease-in-out infinite;}
+.map-dot::after{content:'';position:absolute;inset:-20px;border:1px solid rgba(201,69,10,0.15);border-radius:50%;animation:pu 2s ease-in-out 0.5s infinite;}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(1.2);}}
+.ml{position:absolute;bottom:0.55rem;right:0.55rem;font-size:0.48rem;letter-spacing:0.1em;color:rgba(200,245,60,0.4);}
+.addr-detail{background:var(--mg);border:1px solid rgba(200,245,60,0.1);padding:1rem 1.2rem;margin-top:1px;font-size:0.62rem;line-height:1.78;color:var(--sv);}
+.addr-detail strong{color:var(--ag);display:block;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.07em;margin-bottom:0.25rem;}
+
+.menu-list{list-style:none;margin-top:0.9rem;}
+.menu-item{display:flex;justify-content:space-between;align-items:baseline;padding:0.68rem 0;border-bottom:1px solid rgba(242,237,230,0.07);font-size:0.64rem;}
+.mi-name{color:var(--ow);}
+.mi-dots{flex:1;border-bottom:1px dotted rgba(192,189,182,0.18);margin:0 0.52rem;height:1px;align-self:center;}
+.mi-price{color:var(--ag);font-family:'Bebas Neue',sans-serif;font-size:0.88rem;letter-spacing:0.09em;}
+
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(242,237,230,0.06);margin-top:0.9rem;}
+.gal-item{background:var(--mg);aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden;}
+.gal-item:hover{background:var(--mg2);}
+.gal-lbl{position:absolute;bottom:0;left:0;right:0;padding:0.52rem 0.62rem;background:rgba(10,10,10,0.82);font-size:0.52rem;letter-spacing:0.1em;color:var(--ag);opacity:0;transition:opacity 0.2s;}
+.gal-item:hover .gal-lbl{opacity:1;}
+
+.event-list{display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);margin-top:0.9rem;}
+.ev-item{background:var(--db);padding:0.95rem 1.15rem;display:grid;grid-template-columns:65px 1fr auto;gap:0.85rem;align-items:center;transition:background 0.2s;}
+.ev-item:hover{background:var(--mg);}
+.ev-date{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;color:var(--ag);line-height:1;letter-spacing:0.04em;}
+.ev-month{font-size:0.48rem;letter-spacing:0.14em;color:var(--rust);}
+.ev-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.04em;color:var(--ow);margin-bottom:0.16rem;}
+.ev-body{font-size:0.58rem;line-height:1.55;color:var(--sv);}
+.ev-tag{font-size:0.47rem;letter-spacing:0.1em;padding:0.14rem 0.4rem;border:1px solid rgba(201,69,10,0.38);color:var(--rust);}
+
+footer{background:var(--db);border-top:1px solid rgba(242,237,230,0.06);padding:2rem 1.8rem 1.6rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:1.8rem;}
+.fl{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--ag);line-height:1;margin-bottom:0.42rem;letter-spacing:0.05em;}
+.fl-sub{font-size:0.52rem;letter-spacing:0.15em;color:var(--sv);margin-bottom:0.55rem;}
+.ft{font-size:0.59rem;line-height:1.75;color:var(--sv);}
+.ft a{color:var(--ag);text-decoration:none;}
+.ft a:hover{text-decoration:underline;}
+.fct{font-size:0.5rem;letter-spacing:0.19em;color:var(--ag);margin-bottom:0.85rem;}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:0.42rem;}
+.flinks a{font-size:0.61rem;color:var(--sv);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.4rem;}
+.flinks a:hover{color:var(--ow);}
+.flinks .ico{font-size:0.75rem;}
+.fb{grid-column:1/-1;display:flex;justify-content:space-between;padding-top:1.1rem;border-top:1px solid rgba(242,237,230,0.06);font-size:0.5rem;color:rgba(192,189,182,0.3);letter-spacing:0.08em;}
+</style>
+
+<!-- TOP BAR -->
+<div class="info-bar">
+  <span>📍 昆明巫家坝龙光玖云台5栋1305号A4门</span>
+  <span class="ib-center">颜悦美学咖啡体验店 · 9500y2k.com</span>
+  <span>
+    <a href="mailto:mzw528613@gmail.com">✉ mzw528613@gmail.com</a>
+    &nbsp;·&nbsp;
+    <a href="#">🎵 抖音 @颜悦美学咖啡体验店</a>
+  </span>
+</div>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    9500 Y2K
+    <span class="nav-logo-sub">颜悦美学咖啡体验店</span>
+  </div>
+  <ul class="nav-menu">
+    <li><button class="nav-btn" onclick="toggleDrop('d-home',this)">主页 <span class="chev">▾</span></button></li>
+    <li><button class="nav-btn" onclick="toggleDrop('d-about',this)">关于 <span class="chev">▾</span></button></li>
+    <li><button class="nav-btn" onclick="toggleDrop('d-exp',this)">体验 <span class="chev">▾</span></button></li>
+    <li><button class="nav-btn" onclick="toggleDrop('d-coffee',this)">咖啡 <span class="chev">▾</span></button></li>
+    <li><button class="nav-btn" onclick="toggleDrop('d-gallery',this)">影像 <span class="chev">▾</span></button></li>
+    <li><button class="nav-btn" onclick="toggleDrop('d-event',this)">活动 <span class="chev">▾</span></button></li>
+    <li><button class="nav-btn" onclick="toggleDrop('d-addr',this)">地址 <span class="chev">▾</span></button></li>
+  </ul>
+  <div class="nav-badge">NOW OPEN</div>
+</nav>
+
+<!-- DROP: HOME -->
+<div class="mega-drop" id="d-home">
+  <div class="mega-inner" style="grid-template-columns:1fr 2fr;">
+    <div>
+      <div class="drop-eyebrow">颜悦美学咖啡体验店</div>
+      <div class="drop-title">亚文化<br>潮流空间</div>
+      <div class="drop-desc">融合摄影、手工与咖啡体验的多感官线下场所。昆明巫家坝龙光玖云台5栋1305号A4门。</div>
+      <button class="drop-cta" onclick="closeDrop();showPage('home')">进入主页 →</button>
+    </div>
+    <div class="drop-cards" style="grid-template-columns:repeat(3,1fr);">
+      <div class="drop-card" onclick="closeDrop();showPage('about')"><div class="dc-label">ABOUT</div><div class="dc-title">关于空间</div><div class="dc-desc">了解颜悦美学咖啡体验店的故事与理念</div></div>
+      <div class="drop-card" onclick="closeDrop();showPage('exp')"><div class="dc-label">EXPERIENCE</div><div class="dc-title">体验项目</div><div class="dc-desc">摄影、手工、咖啡 DIY 三大核心体验</div></div>
+      <div class="drop-card" onclick="closeDrop();showPage('coffee')"><div class="dc-label">COFFEE</div><div class="dc-title">颜悦咖啡</div><div class="dc-desc">亚文化命名的特调配方与咖啡实验室</div></div>
+      <div class="drop-card" onclick="closeDrop();showPage('gallery')"><div class="dc-label">GALLERY</div><div class="dc-title">影像记录</div><div class="dc-desc">空间影像、活动照片与创作作品集</div></div>
+      <div class="drop-card" onclick="closeDrop();showPage('event')"><div class="dc-label">EVENTS</div><div class="dc-title">近期活动</div><div class="dc-desc">工作坊、展览、主题派对时间表</div></div>
+      <div class="drop-card" onclick="closeDrop();showPage('addr')"><div class="dc-label">VISIT</div><div class="dc-title">到访地址</div><div class="dc-desc">昆明巫家坝 · 营业时间与预约入口</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DROP: ABOUT -->
+<div class="mega-drop" id="d-about">
+  <div class="mega-inner" style="grid-template-columns:1fr 1fr 1fr;">
+    <div>
+      <div class="drop-eyebrow">关于我们</div>
+      <div class="drop-title">颜悦<br>美学</div>
+      <div class="drop-desc">小颜与小悦共同打造的亚文化美学线下空间，连接创作与咖啡的独特体验场所。</div>
+      <button class="drop-cta" onclick="closeDrop();showPage('about')">了解更多 →</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card"><div class="dc-label">CONCEPT</div><div class="dc-title">空间理念</div><div class="dc-desc">Y2K 千禧美学 × 亚文化精神 × 多元体验，形成独特场所气质。</div></div>
+      <div class="drop-card"><div class="dc-label">STORY</div><div class="dc-title">品牌故事</div><div class="dc-desc">从一杯实验咖啡开始，打造集摄影、手工、咖啡于一体的复合空间。</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card"><div class="dc-label">TEAM</div><div class="dc-title">小颜 & 小悦</div><div class="dc-desc">由热爱亚文化的创作者与咖啡师共同打造，每个角落注入真实热情。</div></div>
+      <div class="drop-card"><div class="dc-label">VISION</div><div class="dc-title">未来愿景</div><div class="dc-desc">打造城市青年的精神坐标，让亚文化美学在日常生活中生根发芽。</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DROP: EXP -->
+<div class="mega-drop" id="d-exp">
+  <div class="mega-inner" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+    <div>
+      <div class="drop-eyebrow">体验项目</div>
+      <div class="drop-title">三种<br>维度</div>
+      <div class="drop-desc">摄影、手工、咖啡 DIY——每一种都是与世界对话的独特语言。</div>
+      <button class="drop-cta" onclick="closeDrop();showPage('exp')">查看全部 →</button>
+    </div>
+    <div class="drop-card"><div class="dc-label">01 · PHOTO</div><div class="dc-title">摄影工坊</div><div class="dc-desc">专业布景、可调光系统、器材租借，定期暗房工作坊。</div><div><span class="drop-tag">胶片</span><span class="drop-tag">人像</span><span class="drop-tag">暗房</span></div></div>
+    <div class="drop-card"><div class="dc-label">02 · CRAFT</div><div class="dc-title">手工制作</div><div class="dc-desc">陶艺拉坯、皮革工艺、手工印染，驻场手艺人带领。</div><div><span class="drop-tag">陶艺</span><span class="drop-tag">皮革</span><span class="drop-tag">印染</span></div></div>
+    <div class="drop-card"><div class="dc-label">03 · COFFEE</div><div class="dc-title">咖啡 DIY</div><div class="dc-desc">原豆烘焙、风味调配、拉花课程，调制签名配方咖啡。</div><div><span class="drop-tag">烘焙</span><span class="drop-tag">调配</span><span class="drop-tag">拉花</span></div></div>
+  </div>
+</div>
+
+<!-- DROP: COFFEE -->
+<div class="mega-drop" id="d-coffee">
+  <div class="mega-inner" style="grid-template-columns:1fr 1fr;">
+    <div>
+      <div class="drop-eyebrow">颜悦咖啡</div>
+      <div class="drop-title">咖啡<br>实验室</div>
+      <div class="drop-desc">每一款配方都以亚文化美学命名，在传统与实验之间找到属于 9500 的风味坐标。</div>
+      <button class="drop-cta" onclick="closeDrop();showPage('coffee')">查看菜单 →</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card"><div class="dc-label">SIGNATURE</div><div class="dc-title">Y2K 千禧拿铁</div><div class="dc-desc">千禧色彩为灵感，奶香馥郁，回味带有淡淡焦糖层次。</div></div>
+      <div class="drop-card"><div class="dc-label">SPECIAL</div><div class="dc-title">暗室冷萃特调</div><div class="dc-desc">18小时冷萃提取，融入樱桃与黑巧克力风味。</div></div>
+      <div class="drop-card"><div class="dc-label">DIY</div><div class="dc-title">专属配方定制</div><div class="dc-desc">与咖啡师共同调配，创作一杯带你签名的专属配方。</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DROP: GALLERY -->
+<div class="mega-drop" id="d-gallery">
+  <div class="mega-inner" style="grid-template-columns:1fr 1fr 1fr;">
+    <div>
+      <div class="drop-eyebrow">影像记录</div>
+      <div class="drop-title">空间<br>影像</div>
+      <div class="drop-desc">记录每一次光与影的相遇，每一件手工艺品的诞生，每一杯咖啡调制的瞬间。</div>
+      <button class="drop-cta" onclick="closeDrop();showPage('gallery')">进入影像 →</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card"><div class="dc-label">SPACE</div><div class="dc-title">空间实拍</div><div class="dc-desc">摄影工作室、手工区、咖啡实验室的真实空间影像。</div></div>
+      <div class="drop-card"><div class="dc-label">WORKS</div><div class="dc-title">创作作品</div><div class="dc-desc">访客在此创作的摄影、手工、咖啡作品精选展示。</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card"><div class="dc-label">EVENTS</div><div class="dc-title">活动现场</div><div class="dc-desc">工作坊、展览、派对等活动的现场影像记录。</div></div>
+      <div class="drop-card"><div class="dc-label">SUBMIT</div><div class="dc-title">投稿作品</div><div class="dc-desc">将你在颜悦创作的作品投稿至影像墙。</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DROP: EVENT -->
+<div class="mega-drop" id="d-event">
+  <div class="mega-inner" style="grid-template-columns:1fr 2fr;">
+    <div>
+      <div class="drop-eyebrow">近期活动</div>
+      <div class="drop-title">本月<br>日程</div>
+      <div class="drop-desc">工作坊、展览、派对——每周都有新体验等待你的到来。</div>
+      <button class="drop-cta" onclick="closeDrop();showPage('event')">查看全部 →</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card" style="display:grid;grid-template-columns:50px 1fr auto;gap:0.75rem;align-items:center;"><div><div class="dc-title" style="font-size:1.25rem;">06.14</div><div class="dc-label">周六</div></div><div><div class="dc-title">胶片摄影工作坊</div><div class="dc-desc">入门胶片拍摄，含暗房显影体验，限10人</div></div><span class="drop-tag">摄影</span></div>
+      <div class="drop-card" style="display:grid;grid-template-columns:50px 1fr auto;gap:0.75rem;align-items:center;"><div><div class="dc-title" style="font-size:1.25rem;">06.21</div><div class="dc-label">周六</div></div><div><div class="dc-title">陶艺拉坯体验课</div><div class="dc-desc">驻场陶艺师带领，2小时完整体验</div></div><span class="drop-tag">手工</span></div>
+      <div class="drop-card" style="display:grid;grid-template-columns:50px 1fr auto;gap:0.75rem;align-items:center;"><div><div class="dc-title" style="font-size:1.25rem;">06.28</div><div class="dc-label">周六</div></div><div><div class="dc-title">Y2K 主题咖啡派对</div><div class="dc-desc">千禧特调发布，现场音乐表演</div></div><span class="drop-tag">派对</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DROP: ADDR -->
+<div class="mega-drop" id="d-addr">
+  <div class="mega-inner" style="grid-template-columns:1fr 1fr 1fr;">
+    <div>
+      <div class="drop-eyebrow">到访信息</div>
+      <div class="drop-title">找到<br>我们</div>
+      <div class="drop-desc">昆明巫家坝龙光玖云台5栋1305号A4门，体验项目需提前预约。</div>
+      <button class="drop-cta" onclick="closeDrop();showPage('addr')">查看地图 →</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card"><div class="dc-label">ADDRESS</div><div class="dc-title">门店地址</div><div class="dc-desc">昆明市巫家坝<br>龙光玖云台5栋1305号A4门</div></div>
+      <div class="drop-card"><div class="dc-label">HOURS</div><div class="dc-title">营业时间</div><div class="dc-desc">周二 — 周日 11:00 — 22:00<br>周一休息</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(242,237,230,0.06);">
+      <div class="drop-card"><div class="dc-label">CONTACT</div><div class="dc-title">联系我们</div><div class="dc-desc">📧 mzw528613@gmail.com<br>🎵 抖音 @颜悦美学咖啡体验店<br>📷 小红书 / Instagram @9500Y2K</div></div>
+      <div class="drop-card"><div class="dc-label">BOOKING</div><div class="dc-title">预约方式</div><div class="dc-desc">微信公众号 / 抖音私信预约<br>邮件预约48小时内回复</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGES ===== -->
+<div id="page-home" class="page active">
+  <div class="hero-wrap">
+    <div>
+      <div class="hero-eyebrow">亚文化潮流聚集地 · 线下空间</div>
+      <h1 class="hero-h1">颜悦<span>美学</span>空间</h1>
+      <div class="hero-sub-name">颜悦美学咖啡体验店</div>
+      <p class="hero-p">摄影 · 手工 · 咖啡 DIY<br>包含摄影、手工制作、咖啡diy多元化体验<br><br>📍 昆明巫家坝龙光玖云台5栋1305号A4门</p>
+      <div class="hero-btns">
+        <button class="btn-p" onclick="showPage('exp')">探索体验</button>
+        <button class="btn-g" onclick="showPage('addr')">预约到访</button>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <img id="brandImg" class="brand-img" src="" alt="颜悦·美学咖啡体验馆">
+      <div class="img-tag tl">颜悦美学</div>
+      <div class="img-tag br">9500Y2K.COM</div>
+    </div>
+  </div>
+  <div class="mq-wrap">
+    <div class="mq-track">
+      <span>颜悦美学咖啡体验店</span><span class="d">✦</span><span>摄影工坊</span><span class="d">✦</span><span>手工制作</span><span class="d">✦</span><span>咖啡 DIY</span><span class="d">✦</span><span>亚文化潮流</span><span class="d">✦</span><span>抖音 @颜悦美学咖啡体验店</span><span class="d">✦</span><span>SUBCULTURE</span><span class="d">✦</span><span>Y2K AESTHETIC</span><span class="d">✦</span><span>巫家坝龙光玖云台</span><span class="d">✦</span>
+      <span>颜悦美学咖啡体验店</span><span class="d">✦</span><span>摄影工坊</span><span class="d">✦</span><span>手工制作</span><span class="d">✦</span><span>咖啡 DIY</span><span class="d">✦</span><span>亚文化潮流</span><span class="d">✦</span><span>抖音 @颜悦美学咖啡体验店</span><span class="d">✦</span><span>SUBCULTURE</span><span class="d">✦</span><span>Y2K AESTHETIC</span><span class="d">✦</span><span>巫家坝龙光玖云台</span><span class="d">✦</span>
+    </div>
+  </div>
+</div>
+
+<div id="page-about" class="page">
+  <div class="sec-page">
+    <div class="sec-eyebrow">关于我们</div>
+    <h2 class="sec-h2">颜悦美学咖啡体验店</h2>
+    <p class="sec-p">由小颜与小悦共同打造的亚文化美学线下空间。这里不是普通的咖啡馆，也不是传统的工作室——而是一个多感官场域，让每一位到访者都能在亚文化美学的包裹中找到属于自己的创作出口。</p>
+    <div class="grid2">
+      <div class="g-card"><div class="gc-num">01</div><div class="gc-title">空间理念</div><p class="gc-body">Y2K 千禧美学 × 亚文化精神 × 多元体验，三者交汇形成独特的场所气质。我们相信，空间本身就是一种创作媒介。</p><div class="tags"><span class="tag">Y2K 美学</span><span class="tag">亚文化</span><span class="tag">多感官</span></div></div>
+      <div class="g-card"><div class="gc-num">02</div><div class="gc-title">小颜 & 小悦</div><p class="gc-body">小颜负责摄影与视觉，小悦专注咖啡与手工，两人共同定义了颜悦的美学语言。每一个角落都注入了真实的热情与审美判断。</p><div class="tags"><span class="tag">创作者</span><span class="tag">咖啡师</span><span class="tag">手艺人</span></div></div>
+      <div class="g-card"><div class="gc-num">03</div><div class="gc-title">品牌故事</div><p class="gc-body">从一杯实验咖啡开始，到如今集摄影、手工、咖啡于一体的复合空间。9500 是一个坐标，也是一种态度——拒绝单调，拥抱多元。</p><div class="tags"><span class="tag">EST. 2024</span><span class="tag">复合空间</span></div></div>
+      <div class="g-card"><div class="gc-num">04</div><div class="gc-title">关注我们</div><p class="gc-body">抖音、小红书、Instagram 均可搜索「颜悦美学咖啡体验店」或「9500Y2K」找到我们。欢迎私信预约或咨询。</p><div class="tags"><span class="tag">抖音</span><span class="tag">小红书</span><span class="tag">Instagram</span><span class="tag">微信</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-exp" class="page">
+  <div class="sec-page">
+    <div class="sec-eyebrow">体验项目</div>
+    <h2 class="sec-h2">三种维度 · 无限体验</h2>
+    <p class="sec-p">颜悦美学咖啡体验店包含摄影、手工制作、咖啡DIY多元化体验。无需经验，只需带来你的好奇心。</p>
+    <div class="grid3">
+      <div class="g-card"><div class="gc-num">01</div><div class="gc-title">摄影工坊</div><p class="gc-body">配备专业布景、可调光系统与器材租借服务。胶片与数码均可，定期举办暗房工作坊与主题拍摄活动。</p><div class="tags"><span class="tag">胶片摄影</span><span class="tag">人像布景</span><span class="tag">器材租借</span><span class="tag">暗房工作坊</span></div></div>
+      <div class="g-card"><div class="gc-num">02</div><div class="gc-title">手工制作</div><p class="gc-body">陶艺拉坯、皮革工艺、手工印染、刺绣装帧——驻场手艺人带领，无需经验，跟随感觉创作专属作品。</p><div class="tags"><span class="tag">陶艺拉坯</span><span class="tag">皮革工艺</span><span class="tag">手工印染</span><span class="tag">刺绣</span></div></div>
+      <div class="g-card"><div class="gc-num">03</div><div class="gc-title">咖啡 DIY</div><p class="gc-body">从原豆烘焙到风味调配，从拉花技术到冰滴实验。亲手调制一杯带有自己签名的配方咖啡，将颜悦美学注入每一口味觉记忆。</p><div class="tags"><span class="tag">原豆烘焙</span><span class="tag">风味调配</span><span class="tag">拉花课程</span><span class="tag">冰滴实验</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-coffee" class="page">
+  <div class="sec-page">
+    <div class="sec-eyebrow">颜悦咖啡</div>
+    <h2 class="sec-h2">咖啡实验室</h2>
+    <p class="sec-p">每一款配方都以亚文化美学命名，在传统与实验之间找到属于 9500 的风味坐标。</p>
+    <div class="grid2">
+      <div>
+        <div class="g-card" style="margin-bottom:1px;"><div class="gc-title">特调系列</div><p class="gc-body">以亚文化符号命名的签名咖啡，每一杯都有独特的风味故事与视觉设计。</p></div>
+        <ul class="menu-list">
+          <li class="menu-item"><span class="mi-name">Y2K 千禧拿铁</span><span class="mi-dots"></span><span class="mi-price">¥38</span></li>
+          <li class="menu-item"><span class="mi-name">颜悦美式签章</span><span class="mi-dots"></span><span class="mi-price">¥32</span></li>
+          <li class="menu-item"><span class="mi-name">焦糖胶卷冰</span><span class="mi-dots"></span><span class="mi-price">¥42</span></li>
+          <li class="menu-item"><span class="mi-name">暗室冷萃特调</span><span class="mi-dots"></span><span class="mi-price">¥45</span></li>
+          <li class="menu-item"><span class="mi-name">DIY 专属配方</span><span class="mi-dots"></span><span class="mi-price">¥68+</span></li>
+        </ul>
+      </div>
+      <div class="g-card"><div class="gc-title">咖啡 DIY 课程</div><p class="gc-body" style="margin-bottom:0.75rem;">与咖啡师一对一，从选豆、烘焙到调配，全程参与创作属于你的签名配方咖啡。课程约 90 分钟，配方卡可带走留存。</p><div class="tags"><span class="tag">原豆选品</span><span class="tag">手冲技术</span><span class="tag">拉花体验</span><span class="tag">配方定制</span></div><button class="drop-cta" style="margin-top:0.9rem;" onclick="showPage('addr')">预约课程 →</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-gallery" class="page">
+  <div class="sec-page">
+    <div class="sec-eyebrow">影像记录</div>
+    <h2 class="sec-h2">空间影像</h2>
+    <p class="sec-p">记录每一次光与影的相遇，每一件手工艺品的诞生，每一杯咖啡调制的瞬间。</p>
+    <div class="gal-grid">
+      <div class="gal-item" style="background:#1a1208;"><svg width="50" height="50" viewBox="0 0 50 50"><rect x="3" y="3" width="44" height="44" fill="none" stroke="rgba(200,245,60,0.18)" stroke-width="0.5"/><circle cx="25" cy="25" r="14" fill="none" stroke="rgba(201,69,10,0.3)" stroke-width="0.5"/><circle cx="25" cy="25" r="6" fill="rgba(201,69,10,0.2)"/></svg><div class="gal-lbl">摄影工作室</div></div>
+      <div class="gal-item" style="background:#1f1616;"><svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,4 46,44 4,44" fill="none" stroke="rgba(200,245,60,0.2)" stroke-width="0.5"/><circle cx="25" cy="31" r="8" fill="rgba(200,245,60,0.08)"/></svg><div class="gal-lbl">手工制作区</div></div>
+      <div class="gal-item" style="background:#121a12;"><svg width="50" height="50" viewBox="0 0 50 50"><rect x="3" y="3" width="18" height="18" fill="rgba(201,69,10,0.15)" stroke="rgba(201,69,10,0.3)" stroke-width="0.5"/><rect x="27" y="3" width="18" height="18" fill="rgba(200,245,60,0.08)" stroke="rgba(200,245,60,0.2)" stroke-width="0.5"/><rect x="3" y="27" width="18" height="18" fill="rgba(200,245,60,0.06)" stroke="rgba(200,245,60,0.15)" stroke-width="0.5"/><rect x="27" y="27" width="18" height="18" fill="rgba(192,189,182,0.06)" stroke="rgba(192,189,182,0.2)" stroke-width="0.5"/></svg><div class="gal-lbl">陶艺工坊</div></div>
+      <div class="gal-item" style="background:#1e1420;"><svg width="50" height="50" viewBox="0 0 50 50"><ellipse cx="25" cy="25" rx="20" ry="20" fill="none" stroke="rgba(200,245,60,0.15)" stroke-width="0.5"/><ellipse cx="25" cy="25" rx="11" ry="11" fill="none" stroke="rgba(201,69,10,0.2)" stroke-width="0.5"/><ellipse cx="25" cy="25" rx="4" ry="4" fill="rgba(201,69,10,0.25)"/></svg><div class="gal-lbl">咖啡实验室</div></div>
+      <div class="gal-item" style="background:#12161a;"><svg width="50" height="50" viewBox="0 0 50 50"><path d="M25 4L46 25L25 46L4 25Z" fill="none" stroke="rgba(200,245,60,0.2)" stroke-width="0.5"/><path d="M25 16L36 25L25 36L14 25Z" fill="rgba(200,245,60,0.1)"/><circle cx="25" cy="25" r="4" fill="rgba(201,69,10,0.5)"/></svg><div class="gal-lbl">活动现场</div></div>
+      <div class="gal-item" style="background:#111109;"><svg width="50" height="50" viewBox="0 0 50 50"><line x1="0" y1="0" x2="50" y2="50" stroke="rgba(200,245,60,0.15)" stroke-width="0.5"/><line x1="50" y1="0" x2="0" y2="50" stroke="rgba(200,245,60,0.15)" stroke-width="0.5"/><circle cx="25" cy="25" r="12" fill="none" stroke="rgba(200,245,60,0.3)" stroke-width="0.5"/><text x="25" y="28" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="8" fill="rgba(200,245,60,0.6)" letter-spacing="2">Y2K</text></svg><div class="gal-lbl">亚文化展览</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-event" class="page">
+  <div class="sec-page">
+    <div class="sec-eyebrow">近期活动</div>
+    <h2 class="sec-h2">本月日程</h2>
+    <p class="sec-p">工作坊、主题展览、派对——每周都有新的体验等待你。所有体验项目需提前预约，抖音 / 微信私信均可。</p>
+    <div class="event-list">
+      <div class="ev-item"><div><div class="ev-date">06.14</div><div class="ev-month">周六</div></div><div><div class="ev-title">胶片摄影工作坊</div><div class="ev-body">入门胶片拍摄技巧，含暗房显影体验。名额限10人，含器材使用与冲洗费用。</div></div><span class="ev-tag">摄影</span></div>
+      <div class="ev-item"><div><div class="ev-date">06.21</div><div class="ev-month">周六</div></div><div><div class="ev-title">陶艺拉坯体验课</div><div class="ev-body">驻场陶艺师带领，2小时完整体验，作品上釉烧制后可来取或快递。</div></div><span class="ev-tag">手工</span></div>
+      <div class="ev-item"><div><div class="ev-date">06.28</div><div class="ev-month">周六</div></div><div><div class="ev-title">Y2K 主题咖啡派对</div><div class="ev-body">千禧主题特调新品发布，现场音乐表演，免费入场，消费饮品即可参与。</div></div><span class="ev-tag">派对</span></div>
+      <div class="ev-item"><div><div class="ev-date">07.05</div><div class="ev-month">周六</div></div><div><div class="ev-title">皮革工艺入门课</div><div class="ev-body">学习基础皮革切割、缝制与压印技术，完成一件皮革小物作品带回家。</div></div><span class="ev-tag">手工</span></div>
+      <div class="ev-item"><div><div class="ev-date">07.12</div><div class="ev-month">周六</div></div><div><div class="ev-title">咖啡杯测与风味探索</div><div class="ev-body">专业咖啡师带领杯测，认识不同产区风味特征，建立个人风味图谱。</div></div><span class="ev-tag">咖啡</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-addr" class="page">
+  <div class="sec-page">
+    <div class="visit-grid">
+      <div>
+        <div class="sec-eyebrow">到访信息</div>
+        <h2 class="sec-h2">找到我们</h2>
+        <div class="addr-detail">
+          <strong>颜悦美学咖啡体验店</strong>
+          昆明市巫家坝 · 龙光玖云台5栋1305号A4门
+        </div>
+        <div>
+          <div class="info-row"><div class="il">地址</div><div class="iv"><strong>龙光玖云台5栋1305号A4门</strong>昆明市巫家坝</div></div>
+          <div class="info-row"><div class="il">营业</div><div class="iv"><strong>周二 — 周日</strong>11:00 — 22:00 · 周一休息</div></div>
+          <div class="info-row"><div class="il">预约</div><div class="iv"><strong>体验项目需提前预约</strong>咖啡区无需预约，随时到访</div></div>
+          <div class="info-row"><div class="il">邮箱</div><div class="iv"><a href="mailto:mzw528613@gmail.com">mzw528613@gmail.com</a></div></div>
+          <div class="info-row"><div class="il">抖音</div><div class="iv"><strong>@颜悦美学咖啡体验店</strong>关注获取最新活动资讯 · 私信预约</div></div>
+          <div class="info-row"><div class="il">小红书</div><div class="iv"><strong>@颜悦美学咖啡体验店</strong>探索打卡攻略与作品展示</div></div>
+          <div class="info-row"><div class="il">Instagram</div><div class="iv"><strong>@9500Y2K</strong>国际社群与影像作品</div></div>
+          <div class="info-row"><div class="il">微信</div><div class="iv"><strong>公众号搜索「颜悦美学咖啡体验店」</strong>预约 · 活动推送</div></div>
+          <div class="info-row"><div class="il">网站</div><div class="iv"><a href="https://9500y2k.com" target="_blank">9500y2k.com</a></div></div>
+        </div>
+        <button class="btn-p" style="margin-top:1.2rem;" onclick="window.location.href='mailto:mzw528613@gmail.com'">📧 立即预约 →</button>
+      </div>
+      <div>
+        <div class="map-frame"><div class="map-grid"></div><div class="map-dot"></div><div class="ml">昆明 · 巫家坝 · 龙光玖云台</div></div>
+        <p style="font-size:0.54rem;letter-spacing:0.08em;color:rgba(192,189,182,0.3);margin-top:0.55rem;">↑ 地图仅为示意 · 导航请搜索「颜悦美学咖啡体验店」</p>
+
+        <!-- SOCIAL CARDS -->
+        <div style="margin-top:1.2rem;">
+          <div style="font-size:0.52rem;letter-spacing:0.2em;color:var(--ag);margin-bottom:0.7rem;">关注我们</div>
+          <div class="social-grid">
+            <div class="social-card">
+              <div class="social-icon si-dy">🎵</div>
+              <div class="social-name">抖音</div>
+              <div class="social-handle">@颜悦美学<br>咖啡体验店</div>
+            </div>
+            <div class="social-card">
+              <div class="social-icon si-red">📕</div>
+              <div class="social-name">小红书</div>
+              <div class="social-handle">@颜悦美学<br>咖啡体验店</div>
+            </div>
+            <div class="social-card">
+              <div class="social-icon si-ins">📷</div>
+              <div class="social-name">Instagram</div>
+              <div class="social-handle">@9500Y2K</div>
+            </div>
+            <div class="social-card">
+              <div class="social-icon si-wechat">💬</div>
+              <div class="social-name">微信</div>
+              <div class="social-handle">公众号搜索<br>颜悦美学</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="fl">9500 Y2K</div>
+    <div class="fl-sub">颜悦美学咖啡体验店</div>
+    <p class="ft">
+      亚文化潮流聚集地 · 摄影 · 手工 · 咖啡 DIY<br>
+      📍 昆明巫家坝龙光玖云台5栋1305号A4门<br>
+      <a href="mailto:mzw528613@gmail.com">mzw528613@gmail.com</a> · <a href="https://9500y2k.com" target="_blank">9500y2k.com</a>
+    </p>
+  </div>
+  <div>
+    <div class="fct">体验项目</div>
+    <ul class="flinks">
+      <li><a href="#" onclick="showPage('exp');return false;">摄影工坊</a></li>
+      <li><a href="#" onclick="showPage('exp');return false;">手工制作</a></li>
+      <li><a href="#" onclick="showPage('exp');return false;">咖啡 DIY</a></li>
+      <li><a href="#" onclick="showPage('event');return false;">主题活动</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="fct">社交媒体</div>
+    <ul class="flinks">
+      <li><a href="#"><span class="ico">🎵</span>抖音 @颜悦美学咖啡体验店</a></li>
+      <li><a href="#"><span class="ico">📕</span>小红书 @颜悦美学咖啡体验店</a></li>
+      <li><a href="#"><span class="ico">📷</span>Instagram @9500Y2K</a></li>
+      <li><a href="#"><span class="ico">💬</span>微信公众号</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="fct">联系我们</div>
+    <ul class="flinks">
+      <li><a href="mailto:mzw528613@gmail.com"><span class="ico">✉</span>mzw528613@gmail.com</a></li>
+      <li><a href="https://9500y2k.com" target="_blank"><span class="ico">🌐</span>9500y2k.com</a></li>
+      <li><a href="#" onclick="showPage('addr');return false;"><span class="ico">📍</span>门店地址</a></li>
+      <li><a href="#" onclick="showPage('addr');return false;"><span class="ico">📅</span>立即预约</a></li>
+    </ul>
+  </div>
+  <div class="fb">
+    <span>© 2024 颜悦美学咖啡体验店 · 9500 Y2K · 版权所有</span>
+    <span>昆明巫家坝龙光玖云台5栋1305号A4门</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const img = document.getElementById('brandImg');
+  if(!img) return;
+  fetch('/mnt/user-data/uploads/\u5fae\u4fe1\u56fe\u7247_20260604025957_1_6.png')
+    .then(r=>r.blob()).then(b=>{img.src=URL.createObjectURL(b);})
+    .catch(()=>{
+      img.style.display='none';
+      const fb=document.createElement('div');
+      fb.style.cssText='width:100%;max-width:440px;height:290px;background:#2e2b24;border:1px solid rgba(200,245,60,0.14);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.8rem;';
+      fb.innerHTML='<div style="font-family:Bebas Neue,sans-serif;font-size:1.5rem;color:#c8f53c;letter-spacing:0.1em;">颜悦·美学咖啡体验馆</div><div style="font-size:0.6rem;color:#c0bdb6;letter-spacing:0.1em;text-align:center;padding:0 1rem;">小颜 ♡ 小悦<br>摄影 · 手工制作 · 咖啡DIY</div><div style="font-size:0.62rem;color:rgba(200,245,60,0.6);">9500y2k.com</div>';
+      img.parentNode.insertBefore(fb,img.nextSibling);
+    });
+})();
+
+let openId=null,activeB=null;
+function toggleDrop(id,btn){
+  const d=document.getElementById(id);
+  if(openId===id){d.classList.remove('open');btn.classList.remove('active');openId=null;activeB=null;}
+  else{
+    if(openId){document.getElementById(openId).classList.remove('open');if(activeB)activeB.classList.remove('active');}
+    d.classList.add('open');btn.classList.add('active');openId=id;activeB=btn;
+  }
+}
+function closeDrop(){if(openId){document.getElementById(openId).classList.remove('open');if(activeB)activeB.classList.remove('active');openId=null;activeB=null;}}
+function showPage(k){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('page-'+k);if(pg)pg.classList.add('active');closeDrop();}
+document.addEventListener('click',function(e){if(!e.target.closest('nav')&&!e.target.closest('.mega-drop'))closeDrop();});
+</script>
